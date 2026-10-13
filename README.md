@@ -13,6 +13,7 @@ changes go in the repository they belong to.
 ```
 money-across-borders-workspace/
 ├── README.md                 # this file
+├── AGENTS.md / CLAUDE.md     # guidance for AI agents (CLAUDE.md imports AGENTS.md)
 ├── templates/                # reusable briefs to start a new feature
 └── features/
     └── <feature-slug>/

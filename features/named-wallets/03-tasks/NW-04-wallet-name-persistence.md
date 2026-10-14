@@ -78,6 +78,12 @@ Other writers:
 - Files changed:
 - Results of `npm test`, `test:db` (or the NW-01 command), `test:seed`, `test:concurrency`, lint and format check:
 
+### REFACTOR (Claude)
+
+- Date:
+- Changes and reasons (or "No refactoring needed: <reason>"):
+- Results of the full suite, lint and format check; test SHA-256 unchanged:
+
 ### VERIFY (Codex)
 
 - Date:

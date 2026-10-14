@@ -23,6 +23,7 @@ instead.
 ```
 README.md                     # human overview + feature index
 AGENTS.md / CLAUDE.md         # this guidance
+docs/workflows/               # multi-agent procedures (README.md index, tdd.md)
 templates/                    # reusable briefs that start each stage
   discovery-brief.md
   spec-definitions-brief.md
@@ -35,7 +36,7 @@ features/<feature-slug>/
   03-tasks/                   # implementation tasks, only after specs are approved
 ```
 
-## Workflow
+## Feature lifecycle
 
 Each feature moves through numbered stages. **Don't skip a stage, and don't start the next one until
 the user asks for it.**
@@ -45,43 +46,22 @@ the user asks for it.**
 2. **Specifications:** start from `templates/spec-definitions-brief.md`. Turn the approved report into
    `02-specs/specifications.md`, keeping feature requirements separate from technical improvements.
 3. **Tasks:** only after engineering approves the specs, break them into tasks under `03-tasks/`.
+   Each task is then implemented with the [TDD workflow](docs/workflows/tdd.md).
 
 When a stage finishes, update the feature's `README.md` (stage status, spec decisions) and the feature
 table in the root `README.md`.
 
-## Implementation (TDD)
+## Workflows
 
-Each task in `03-tasks/` is implemented in three steps, each by a fixed agent. One step finishes before
-the next starts, and each agent records its result in the task file's `## TDD log` section.
+Procedures that several agents follow live in [`docs/workflows/`](docs/workflows/README.md). This file
+keeps the global rules; when a workflow disagrees with it, this file wins.
 
-| Step | Agent | Does | Must not |
-|---|---|---|---|
-| **RED** | Codex | Write tests that encode the task's acceptance criteria, and update existing tests whose setup no longer matches the new contract. Run them and confirm they fail **for the expected reason** (missing behavior, not a typo or broken import). Log the test files and the failing output. | Write or change production code. |
-| **GREEN** | Claude | Write the minimum production code that makes the RED tests pass, then run the repo's full suite, lint and format check. Log the files changed. | Edit, delete or skip RED tests. If a test looks wrong, stop and log why; it goes back to RED. |
-| **VERIFY** | Codex | Re-run the suite, lint and format check. Check the code against the acceptance criteria and the repo's `AGENTS.md` invariants, and confirm the RED tests are unchanged since RED. Log *pass*, or findings that send the task back to GREEN (or to RED, when a test is missing). | Fix the code itself. |
+| Work | Workflow |
+|---|---|
+| Implementing a task from `03-tasks/` | [TDD](docs/workflows/tdd.md): RED (Codex) → GREEN (Claude) → REFACTOR (Claude, optional) → VERIFY (Codex) |
 
-- A test may only encode a rule that the spec states or an answered open question decides. A task that
-  depends on an open question can't enter RED.
-- Commands come from each repo's `AGENTS.md` (backend: `npm test`; `npm run test:integration` needs
-  Postgres). The frontend has no test runner until SPEC-T5 lands, so frontend tasks wait for it.
-- Tasks with no behavior to test first (e.g. a test harness) say so in their task file and skip RED.
-
-**Hand-off and logging** (learned on NW-02):
-
-- **One branch per task** in the code repo (e.g. `feat/nw-02-wallet-name-value-object`), created by
-  RED from an up-to-date `main`. Work on one task at a time, since the hand-off is the working tree.
-- **Nothing is committed until VERIFY passes.** The backend's pre-commit hook runs `npm test`, so a
-  RED commit would be blocked; don't bypass it with `--no-verify`. Each step leaves its changes
-  uncommitted for the next.
-- **RED records the test file's SHA-256** in the log. GREEN and VERIFY check it before and after
-  their step, to prove the tests weren't touched.
-- For a brand-new module, "Cannot find module" **for that module only** is a valid RED failure.
-- **Follow-up rounds get new sections**, never edits to earlier ones: `RED 2`, `GREEN 2`, `VERIFY 2`,
-  and so on. A correction to an earlier entry goes in the newer section.
-- Codex's sandbox may block local HTTP listeners, which some backend suites start. Run the suite
-  outside that restriction, or log the limitation.
-- **When VERIFY passes:** set the task to *Done*, commit the code on the task branch and open a PR in
-  the code repo; then commit the task log in this workspace on its own branch and open a PR.
+**Before starting any TDD phase, read [`docs/workflows/tdd.md`](docs/workflows/tdd.md) in full and
+follow it.** Each phase records its evidence in the task file's `## TDD log` section.
 
 ## Rules
 
@@ -111,4 +91,5 @@ the next starts, and each agent records its result in the task file's `## TDD lo
 ## Git
 
 - Default branch: `main`. Remote: `origin` (GitHub, `JeanRiffel/money-across-borders-workspace`).
-- Commit only when the user asks.
+- Commit only when the user asks. The one standing exception is the VERIFY-pass step of the
+  [TDD workflow](docs/workflows/tdd.md#verify-verifier), which commits the task and opens its PRs.

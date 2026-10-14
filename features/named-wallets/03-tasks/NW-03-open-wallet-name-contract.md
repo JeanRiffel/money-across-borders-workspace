@@ -52,7 +52,7 @@ Everything else that builds wallets:
 ## Notes for RED
 
 - Existing tests that open wallets will start failing because `name` is now required. Update them
-  as part of RED (per [AGENTS.md](../../../AGENTS.md#implementation-tdd)), including
+  as part of RED (per the [TDD workflow](../../../docs/workflows/tdd.md#red-test-author)), including
   `__tests__/domain/entities/wallet.test.ts` (`buildWallet()`, line 13),
   `__tests__/application/use-cases/wallet/open-wallet-use-case.test.ts`,
   `__tests__/application/wallet/dto/open-wallet-input.test.ts`, and the remittance use-case and
@@ -88,6 +88,12 @@ Everything else that builds wallets:
 - Date:
 - Files changed:
 - Results of `npm test`, lint and format check:
+
+### REFACTOR (Claude)
+
+- Date:
+- Changes and reasons (or "No refactoring needed: <reason>"):
+- Results of the full suite, lint and format check; test SHA-256 unchanged:
 
 ### VERIFY (Codex)
 

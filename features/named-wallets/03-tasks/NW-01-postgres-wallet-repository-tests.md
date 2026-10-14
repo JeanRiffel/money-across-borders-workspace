@@ -62,6 +62,12 @@ it. If all pass, GREEN has nothing to do and the task goes straight to VERIFY.
 - Files changed (or "none, all tests passed in RED"):
 - Results of `npm test`, lint and format check:
 
+### REFACTOR (Claude)
+
+- Date:
+- Changes and reasons (or "No refactoring needed: <reason>"):
+- Results of the full suite, lint and format check; test SHA-256 unchanged:
+
 ### VERIFY (Codex)
 
 - Date:

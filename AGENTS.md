@@ -58,13 +58,30 @@ the next starts, and each agent records its result in the task file's `## TDD lo
 |---|---|---|---|
 | **RED** | Codex | Write tests that encode the task's acceptance criteria, and update existing tests whose setup no longer matches the new contract. Run them and confirm they fail **for the expected reason** (missing behavior, not a typo or broken import). Log the test files and the failing output. | Write or change production code. |
 | **GREEN** | Claude | Write the minimum production code that makes the RED tests pass, then run the repo's full suite, lint and format check. Log the files changed. | Edit, delete or skip RED tests. If a test looks wrong, stop and log why; it goes back to RED. |
-| **VERIFY** | Codex | Re-run the suite, lint and format check. Check the code against the acceptance criteria and the repo's `AGENTS.md` invariants, and confirm the RED tests are unchanged since RED. Log *pass*, or findings that send the task back to GREEN. | Fix the code itself. |
+| **VERIFY** | Codex | Re-run the suite, lint and format check. Check the code against the acceptance criteria and the repo's `AGENTS.md` invariants, and confirm the RED tests are unchanged since RED. Log *pass*, or findings that send the task back to GREEN (or to RED, when a test is missing). | Fix the code itself. |
 
 - A test may only encode a rule that the spec states or an answered open question decides. A task that
   depends on an open question can't enter RED.
 - Commands come from each repo's `AGENTS.md` (backend: `npm test`; `npm run test:integration` needs
   Postgres). The frontend has no test runner until SPEC-T5 lands, so frontend tasks wait for it.
 - Tasks with no behavior to test first (e.g. a test harness) say so in their task file and skip RED.
+
+**Hand-off and logging** (learned on NW-02):
+
+- **One branch per task** in the code repo (e.g. `feat/nw-02-wallet-name-value-object`), created by
+  RED from an up-to-date `main`. Work on one task at a time, since the hand-off is the working tree.
+- **Nothing is committed until VERIFY passes.** The backend's pre-commit hook runs `npm test`, so a
+  RED commit would be blocked; don't bypass it with `--no-verify`. Each step leaves its changes
+  uncommitted for the next.
+- **RED records the test file's SHA-256** in the log. GREEN and VERIFY check it before and after
+  their step, to prove the tests weren't touched.
+- For a brand-new module, "Cannot find module" **for that module only** is a valid RED failure.
+- **Follow-up rounds get new sections**, never edits to earlier ones: `RED 2`, `GREEN 2`, `VERIFY 2`,
+  and so on. A correction to an earlier entry goes in the newer section.
+- Codex's sandbox may block local HTTP listeners, which some backend suites start. Run the suite
+  outside that restriction, or log the limitation.
+- **When VERIFY passes:** set the task to *Done*, commit the code on the task branch and open a PR in
+  the code repo; then commit the task log in this workspace on its own branch and open a PR.
 
 ## Rules
 

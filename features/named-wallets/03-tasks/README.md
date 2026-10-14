@@ -12,7 +12,7 @@
 | ID | Task | Spec | Repo | Depends on | RED? | Status |
 |---|---|---|---|---|---|---|
 | [NW-01](NW-01-postgres-wallet-repository-tests.md) | Postgres wallet repository integration tests (baseline) | T4 | Backend | – | Characterization | Not started |
-| [NW-02](NW-02-wallet-name-domain.md) | `WalletName` value object | F1 | Backend | – | Yes | Not started |
+| [NW-02](NW-02-wallet-name-domain.md) | `WalletName` value object | F1 | Backend | – | Yes | Done |
 | [NW-03](NW-03-open-wallet-name-contract.md) | `Wallet` carries a name; `POST /wallets` accepts and returns it | F1 | Backend | NW-02 | Yes | Not started |
 | [NW-04](NW-04-wallet-name-persistence.md) | Migration 006, database constraints and seed writers | F1, T4 | Backend | NW-01, NW-03 | Yes | Not started |
 | [NW-05](NW-05-wallet-ownership.md) | Only the account owner can open a wallet | T1 | Backend | NW-03 | Yes | Not started |

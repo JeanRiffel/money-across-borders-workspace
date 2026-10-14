@@ -44,4 +44,4 @@ money-across-borders-workspace/
 
 | Feature | Stage | Status |
 |---|---|---|
-| [Named Wallets](features/named-wallets/README.md) | 2. Specifications | Awaiting engineering approval |
+| [Named Wallets](features/named-wallets/README.md) | 3. Tasks | 11 tasks written; ready for RED |

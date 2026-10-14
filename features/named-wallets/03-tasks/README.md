@@ -3,9 +3,9 @@
 - **Source:** [specifications.md](../02-specs/specifications.md), approved 2026-10-14, with the
   answers to Q1–Q10 and Q12 recorded in its [Open Questions](../02-specs/specifications.md#open-questions).
 - **Scope (v1, per Q5):** SPEC-F1, F2, F3 and SPEC-T1–T5. SPEC-F4 (rename) is deferred.
-- **Method:** each task goes RED (Codex) → GREEN (Claude) → VERIFY (Codex), as defined in
-  [AGENTS.md → Implementation (TDD)](../../../AGENTS.md#implementation-tdd). Each agent fills in its part
-  of the task's `## TDD log`.
+- **Method:** each task goes RED (Codex) → GREEN (Claude) → REFACTOR (Claude, optional) → VERIFY
+  (Codex), as defined in the [TDD workflow](../../../docs/workflows/tdd.md). Each agent fills in its
+  part of the task's `## TDD log`.
 
 ## Tasks
 
@@ -23,7 +23,8 @@
 | [NW-10](NW-10-open-wallet-form-name.md) | Name field in the Open Wallet form, own account only | F2, T1 | Frontend | NW-03, NW-05, NW-09 | Yes | Not started |
 | [NW-11](NW-11-wallet-list-page.md) | Wallet list page | F3 | Frontend | NW-06, NW-09 | Yes | Not started |
 
-Status values: *Not started* → *RED* → *GREEN* → *VERIFY* → *Done* (or back to *GREEN* / *RED*).
+Status values: *Not started* → *RED* → *GREEN* → *REFACTOR* → *VERIFY* → *Done* (or back to an earlier
+phase; see [TDD workflow → Failures](../../../docs/workflows/tdd.md#6-failures-and-retries)).
 
 ## Order
 

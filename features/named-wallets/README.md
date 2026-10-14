@@ -33,7 +33,8 @@ Customers can assign a name to their wallets, so they can identify and distingui
 ## Implementation
 
 Tasks are implemented TDD-style: Codex writes the failing tests (RED), Claude makes them pass
-(GREEN), Codex verifies. See [AGENTS.md → Implementation](../../AGENTS.md#implementation-tdd).
+(GREEN) and optionally refactors (REFACTOR), Codex verifies. See the
+[TDD workflow](../../docs/workflows/tdd.md).
 
 ## Open questions
 

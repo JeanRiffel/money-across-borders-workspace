@@ -58,6 +58,12 @@ The account comes from the token (as in NW-05), so the route has **no path param
 - Files changed:
 - Results of `npm test`, `test:db`, lint and format check:
 
+### REFACTOR (Claude)
+
+- Date:
+- Changes and reasons (or "No refactoring needed: <reason>"):
+- Results of the full suite, lint and format check; test SHA-256 unchanged:
+
 ### VERIFY (Codex)
 
 - Date:

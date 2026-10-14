@@ -63,6 +63,12 @@ means `body.accountId === req.user.accountId`.
 - Files changed:
 - Results of `npm test`, lint and format check:
 
+### REFACTOR (Claude)
+
+- Date:
+- Changes and reasons (or "No refactoring needed: <reason>"):
+- Results of the full suite, lint and format check; test SHA-256 unchanged:
+
 ### VERIFY (Codex)
 
 - Date:

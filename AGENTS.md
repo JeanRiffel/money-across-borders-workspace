@@ -49,23 +49,6 @@ the user asks for it.**
 When a stage finishes, update the feature's `README.md` (stage status, spec decisions) and the feature
 table in the root `README.md`.
 
-## Implementation (TDD)
-
-Each task in `03-tasks/` is implemented in three steps, each by a fixed agent. One step finishes before
-the next starts, and each agent records its result in the task file's `## TDD log` section.
-
-| Step | Agent | Does | Must not |
-|---|---|---|---|
-| **RED** | Codex | Write tests that encode the task's acceptance criteria, and update existing tests whose setup no longer matches the new contract. Run them and confirm they fail **for the expected reason** (missing behavior, not a typo or broken import). Log the test files and the failing output. | Write or change production code. |
-| **GREEN** | Claude | Write the minimum production code that makes the RED tests pass, then run the repo's full suite, lint and format check. Log the files changed. | Edit, delete or skip RED tests. If a test looks wrong, stop and log why; it goes back to RED. |
-| **VERIFY** | Codex | Re-run the suite, lint and format check. Check the code against the acceptance criteria and the repo's `AGENTS.md` invariants, and confirm the RED tests are unchanged since RED. Log *pass*, or findings that send the task back to GREEN. | Fix the code itself. |
-
-- A test may only encode a rule that the spec states or an answered open question decides. A task that
-  depends on an open question can't enter RED.
-- Commands come from each repo's `AGENTS.md` (backend: `npm test`; `npm run test:integration` needs
-  Postgres). The frontend has no test runner until SPEC-T5 lands, so frontend tasks wait for it.
-- Tasks with no behavior to test first (e.g. a test harness) say so in their task file and skip RED.
-
 ## Rules
 
 - **Discovery and spec stages are read-only for the sibling repositories.** Don't modify source code,
@@ -93,5 +76,5 @@ the next starts, and each agent records its result in the task file's `## TDD lo
 
 ## Git
 
-- Default branch: `main`. Remote: `origin` (GitHub, `JeanRiffel/money-across-borders-workspace`).
+- Default branch: `main`. There's no remote configured.
 - Commit only when the user asks.

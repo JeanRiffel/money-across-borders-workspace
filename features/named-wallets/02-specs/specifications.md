@@ -1,6 +1,6 @@
 # Named Wallets: Proposed Implementation Specifications
 
-- **Status:** Approved by Jean Riffel on 2026-10-14. Open questions Q1–Q12 are still open.
+- **Status:** Proposed. Awaiting engineering approval.
 - **Date:** 2026-10-13
 - **Source:** [report.md](../01-discovery/report.md) (Technical Discovery Report)
 - **Brief:** [brief.md](brief.md)
@@ -450,25 +450,24 @@ field.
 
 ## Open Questions
 
-Copied from the discovery report (section 8). All except Q11 were answered on 2026-10-14. Q11 only
-blocks SPEC-F4, which is deferred. They need product or
+Copied from the discovery report (section 8) and still **unanswered**. They need product or
 engineering decisions before the specifications that depend on them are approved for
 implementation.
 
-| ID | Question | Blocks | Answer (2026-10-14, Jean Riffel) |
-|---|---|---|---|
-| Q1 | **Required or optional?** Must every new wallet have a name, or is it optional? | F1, F2 | **Required.** Every new wallet must have a name. |
-| Q2 | **Validation rules:** min/max length? Allowed characters (emoji, unicode, punctuation)? Trim whitespace? Collapse internal whitespace? | F1, F2, F4 | **1–40 characters, counted as grapheme clusters** (what the user sees; `Intl.Segmenter` on both sides), after trimming the ends and collapsing internal whitespace to one space. Any Unicode is allowed (accents, emoji, punctuation); control characters are rejected. A DB `CHECK` on `char_length` counts code points, so it can only be a looser safety limit. |
-| Q3 | **Existing wallets:** leave unnamed (NULL plus a UI fallback), or backfill a generated default? If backfilling, what format? | F1, F2, F3 | **Backfill a generated default** in the migration, formatted `"<CURRENCY> Wallet"` (e.g. `"USD Wallet"`). The column is then `NOT NULL`. |
-| Q4 | **Uniqueness:** must names be unique per account? Case-sensitive or not? Across active and closed wallets? | F1, F4, T4 | **Unique per account, case-insensitive, across all wallets** (active and closed): a unique index on `(account_id, lower(name))`. |
-| Q5 | **Scope of v1:** set the name only at creation, rename later (needs `PATCH`), or list wallets with names (needs `GET`)? Without the list, the name is visible only once. | F3, F4 (whether they're in scope) | **Creation + listing.** F1, F2 and F3 are in v1; F4 (rename) is not. |
-| Q6 | **Authorization:** who may name a wallet: only the owning account's user, or anyone opening it (the current UI lets users open wallets for recipients)? Should this feature introduce the missing ownership check on `/wallets`? | T1, F3, F4 | **Only the account's owner** (`accounts.user_id` = the JWT subject) may create or list wallets on it, including `POST /wallets`. Other callers get **404**, so the account's existence isn't leaked. The "open a wallet for a recipient" UI flow is removed. |
-| Q7 | **Product value under the current constraint:** with one wallet per currency per account, is the goal mainly a friendly label? Or is the `UNIQUE(account_id, currency)` rule expected to be relaxed later, so that one account can hold several wallets in the same currency? That would be a much larger change, outside these specs: `findByAccountIdAndCurrency` drives remittances. | All (confirms the overall approach) | **Only a friendly label.** `UNIQUE(account_id, currency)` stays; several wallets per currency is out of scope. |
-| Q8 | **Treasury wallets:** should system treasury wallets get names (e.g. `"Treasury USD"`), or stay NULL? | F1 | **Same backfill as every other wallet** (e.g. `"USD Wallet"`); no special treasury names. |
-| Q9 | **Where else is the name shown?** Remittance form/history, the Elasticsearch remittance index, events (`remittance.completed`)? | F3 (and possibly new specs) | **Only the creation confirmation and the wallet list (F3).** Remittances, the Elasticsearch index and events don't show the name in v1. |
-| Q10 | **Idempotency semantics:** is replaying the original response for the same key with a different name acceptable? | T3 | **Not acceptable: do SPEC-T3.** Reusing a key with a different body is rejected with **422** and doesn't run the use case, on every idempotent endpoint. |
-| Q11 | **Audit:** do renames need history (e.g. a `wallet.renamed` outbox event)? | F4 | *open* |
-| Q12 | **Domain modelling:** a `WalletName` value object, or DTO-level validation only? | F1 | **A `WalletName` value object** in the domain, which owns validation and normalization. |
+| ID | Question | Blocks |
+|---|---|---|
+| Q1 | **Required or optional?** Must every new wallet have a name, or is it optional? | F1, F2 |
+| Q2 | **Validation rules:** min/max length? Allowed characters (emoji, unicode, punctuation)? Trim whitespace? Collapse internal whitespace? | F1, F2, F4 |
+| Q3 | **Existing wallets:** leave unnamed (NULL plus a UI fallback), or backfill a generated default? If backfilling, what format? | F1, F2, F3 |
+| Q4 | **Uniqueness:** must names be unique per account? Case-sensitive or not? Across active and closed wallets? | F1, F4, T4 |
+| Q5 | **Scope of v1:** set the name only at creation, rename later (needs `PATCH`), or list wallets with names (needs `GET`)? Without the list, the name is visible only once. | F3, F4 (whether they're in scope) |
+| Q6 | **Authorization:** who may name a wallet: only the owning account's user, or anyone opening it (the current UI lets users open wallets for recipients)? Should this feature introduce the missing ownership check on `/wallets`? | T1, F3, F4 |
+| Q7 | **Product value under the current constraint:** with one wallet per currency per account, is the goal mainly a friendly label? Or is the `UNIQUE(account_id, currency)` rule expected to be relaxed later, so that one account can hold several wallets in the same currency? That would be a much larger change, outside these specs: `findByAccountIdAndCurrency` drives remittances. | All (confirms the overall approach) |
+| Q8 | **Treasury wallets:** should system treasury wallets get names (e.g. `"Treasury USD"`), or stay NULL? | F1 |
+| Q9 | **Where else is the name shown?** Remittance form/history, the Elasticsearch remittance index, events (`remittance.completed`)? | F3 (and possibly new specs) |
+| Q10 | **Idempotency semantics:** is replaying the original response for the same key with a different name acceptable? | T3 |
+| Q11 | **Audit:** do renames need history (e.g. a `wallet.renamed` outbox event)? | F4 |
+| Q12 | **Domain modelling:** a `WalletName` value object, or DTO-level validation only? | F1 |
 
 **Decisions needed first:** Q5 and Q7 settle which specs are in scope at all, and Q1–Q4 settle
 the core rules. Answering those six would unblock the minimum viable delivery (SPEC-F1 +
@@ -490,12 +489,12 @@ Implementation tasks will be created only after approval.
 
 | Spec | Decision (Approve / Change / Reject / Defer) | Notes |
 |---|---|---|
-| SPEC-F1 | Approve | |
-| SPEC-F2 | Approve | |
-| SPEC-F3 | Approve | In v1 per Q5 |
-| SPEC-F4 | Defer | Out of v1 per Q5 |
-| SPEC-T1 | Approve | |
-| SPEC-T2 | Approve | |
-| SPEC-T3 | Approve | |
-| SPEC-T4 | Approve | |
-| SPEC-T5 | Approve | |
+| SPEC-F1 | | |
+| SPEC-F2 | | |
+| SPEC-F3 | | |
+| SPEC-F4 | | |
+| SPEC-T1 | | |
+| SPEC-T2 | | |
+| SPEC-T3 | | |
+| SPEC-T4 | | |
+| SPEC-T5 | | |

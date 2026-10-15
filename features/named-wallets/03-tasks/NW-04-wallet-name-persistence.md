@@ -5,7 +5,7 @@
 | **Spec** | [SPEC-F1](../02-specs/specifications.md#spec-f1-wallet-name-on-creation-backend--database), [SPEC-T4](../02-specs/specifications.md#spec-t4-postgres-wallet-repository-integration-tests) |
 | **Repo** | `money-across-borders` |
 | **Depends on** | NW-01, NW-03 |
-| **Decisions** | Q3, Q4, Q8 |
+| **Decisions** | Q3, Q4, Q8, Q14 |
 | **Status** | Not started |
 
 ## Goal
@@ -36,7 +36,9 @@ Database behavior (extend the NW-01 suite):
 7. When two requests race and the database rejects the second with that constraint,
    `OpenWalletController` returns **409 with the duplicate-name message** from NW-03, not the
    current "already has a wallet in <currency>" message. A `23505` on the currency constraint keeps
-   today's message. (Unit-testable with a fake error carrying `code` and `constraint`.)
+   today's message. (Unit-testable with a fake error carrying `code` and `constraint`.) Per Q14,
+   this index is the authority on case-insensitive uniqueness, so this mapping is the guaranteed
+   path, not only a race fallback.
 
 Other writers:
 

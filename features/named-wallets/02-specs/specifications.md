@@ -450,8 +450,9 @@ field.
 
 ## Open Questions
 
-Copied from the discovery report (section 8). All except Q11 were answered on 2026-10-14. Q11 only
-blocks SPEC-F4, which is deferred. They need product or
+Copied from the discovery report (section 8). Q1–Q10 and Q12 were answered on 2026-10-14; Q13 and
+Q14 were raised and answered on 2026-10-15, after the NW-02 review. Q11 only blocks SPEC-F4, which
+is deferred. They need product or
 engineering decisions before the specifications that depend on them are approved for
 implementation.
 
@@ -469,6 +470,8 @@ implementation.
 | Q10 | **Idempotency semantics:** is replaying the original response for the same key with a different name acceptable? | T3 | **Not acceptable: do SPEC-T3.** Reusing a key with a different body is rejected with **422** and doesn't run the use case, on every idempotent endpoint. |
 | Q11 | **Audit:** do renames need history (e.g. a `wallet.renamed` outbox event)? | F4 | *open* |
 | Q12 | **Domain modelling:** a `WalletName` value object, or DTO-level validation only? | F1 | **A `WalletName` value object** in the domain, which owns validation and normalization. |
+| Q13 | **Unicode normalization (raised 2026-10-15, NW-02 review):** `"É"` typed as one code point (`U+00C9`) and as `"E"` + combining accent (`U+0301`) look identical, but `WalletName` stores them as different strings, so Q4's uniqueness treats them as two names. Should names be normalized to **NFC** before validation and storage, so look-alike names collide? | F1 (NW-02 normalization, NW-03, NW-04), F2 (NW-10's copy of the rules) | **Yes, NFC** (2026-10-15, Jean Riffel). `WalletName` normalizes to NFC first, before whitespace handling and validation; the stored and returned name is NFC. The frontend applies the same rule. Done in NW-12. |
+| Q14 | **Who decides case-insensitive equality (raised 2026-10-15, NW-02 review):** `WalletName.equals` uses JavaScript `toLowerCase()`, the Q4 index uses Postgres `lower()`, and they disagree on rare letters (`"İ"`: `"i̇"` vs `"i"`; `"ΣΑΣ"`: `"σας"` vs `"σασ"`, checked on `en_US.utf8`). Postgres's result also depends on the database locale. Is the **database's unique index the authority**, with the domain check only as a friendly early error, or must both agree exactly? | F1 (NW-03, NW-04) | **The database index decides** (2026-10-15, Jean Riffel). `uq_wallets_account_lower_name` is the authority; the domain/use-case check is only an early, friendlier error, and a `23505` on that index returns the same duplicate-name 409. Disagreements on rare letters are accepted. |
 
 **Decisions needed first:** Q5 and Q7 settle which specs are in scope at all, and Q1–Q4 settle
 the core rules. Answering those six would unblock the minimum viable delivery (SPEC-F1 +

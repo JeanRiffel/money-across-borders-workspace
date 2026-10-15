@@ -5,7 +5,7 @@
 | **Spec** | [SPEC-F2](../02-specs/specifications.md#spec-f2-wallet-name-in-the-open-wallet-form-frontend), frontend part of [SPEC-T1](../02-specs/specifications.md#spec-t1-wallet-ownership-authorization) |
 | **Repo** | `money-across-borders-web` |
 | **Depends on** | NW-09 (runner); NW-03 + NW-05 (backend contract) |
-| **Decisions** | Q1, Q2, Q6 |
+| **Decisions** | Q1, Q2, Q6, Q13 |
 | **Status** | Not started |
 
 ## Goal
@@ -19,10 +19,10 @@ Name:
 
 1. The form has a required **Name** field (label, input, inline error), using the existing field
    pattern.
-2. `lib/schemas/wallet.ts` applies the same rules as `WalletName` (NW-02): trim and collapse
-   whitespace, then 1–40 grapheme clusters (`Intl.Segmenter`), no control characters. Cover the
+2. `lib/schemas/wallet.ts` applies the same rules as `WalletName` (NW-02, NW-12): Unicode NFC (Q13),
+   then trim and collapse whitespace, then 1–40 grapheme clusters (`Intl.Segmenter`), no control characters. Cover the
    NW-02 cases in the schema tests (empty, blank, 40 vs 41 graphemes, `"👨‍👩‍👧"` = 1, control
-   character rejected).
+   character rejected, decomposed `"e\u0301"` normalized to `"\u00e9"`).
 3. An invalid name shows an inline error, and no request is sent.
 4. A valid name is sent to `/api/wallets`, and the success card shows the **name returned by the
    backend**. `OpenWalletOutput` includes `name: string`.

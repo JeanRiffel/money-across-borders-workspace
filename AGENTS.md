@@ -61,7 +61,8 @@ keeps the global rules; when a workflow disagrees with it, this file wins.
 | Implementing a task from `03-tasks/` | [TDD](docs/workflows/tdd.md): RED (Codex) → GREEN (Claude) → REFACTOR (Claude, optional) → VERIFY (Codex) |
 
 **Before starting any TDD phase, read [`docs/workflows/tdd.md`](docs/workflows/tdd.md) in full and
-follow it.** Each phase records its evidence in the task file's `## TDD log` section.
+follow it.** Each phase records its evidence in the task file's `## TDD log` section and ends with a
+hand-off summary for the next agent ([TDD → Hand-off](docs/workflows/tdd.md#5-hand-off)).
 
 ## Rules
 

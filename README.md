@@ -62,4 +62,4 @@ points agents to them and keeps the global rules.
 
 | Feature | Stage | Status |
 |---|---|---|
-| [Named Wallets](features/named-wallets/README.md) | 3. Tasks | 11 tasks written; ready for RED |
+| [Named Wallets](features/named-wallets/README.md) | 3. Tasks | Implementation in progress; NW-01 and NW-02 Done |

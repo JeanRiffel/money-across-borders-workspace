@@ -4,8 +4,8 @@
 |---|---|
 | **Spec** | [SPEC-F1](../02-specs/specifications.md#spec-f1-wallet-name-on-creation-backend--database) |
 | **Repo** | `money-across-borders` |
-| **Depends on** | NW-02 |
-| **Decisions** | Q1, Q2, Q4, Q8 |
+| **Depends on** | NW-02, NW-12 |
+| **Decisions** | Q1, Q2, Q4, Q8, Q13, Q14 |
 | **Status** | Not started |
 
 ## Goal
@@ -59,6 +59,9 @@ Everything else that builds wallets:
   idempotency tests that open wallets.
 - The uniqueness check needs a repository lookup; RED's tests define the method name, GREEN
   implements it in both repositories.
+- Per Q14, this check is only an early, friendlier error; the database index (NW-04) is the
+  authority. Don't test that the in-memory and Postgres lookups agree on rare letters (`"İ"`,
+  final sigma): they may not, and that's accepted.
 
 ## References
 

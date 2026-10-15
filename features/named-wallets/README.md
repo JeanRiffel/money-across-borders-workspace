@@ -14,7 +14,7 @@ Customers can assign a name to their wallets, so they can identify and distingui
 |---|---|---|
 | 1. Discovery | [brief](01-discovery/brief.md) · [report](01-discovery/report.md) | Done |
 | 2. Specifications | [brief](02-specs/brief.md) · [specifications](02-specs/specifications.md) | Approved (2026-10-14) |
-| 3. Tasks | [tasks](03-tasks/README.md) | 11 tasks (NW-01–NW-11); NW-01 Done (VERIFY passed 2026-10-15), NW-02 Done |
+| 3. Tasks | [tasks](03-tasks/README.md) | 12 tasks (NW-01–NW-12; NW-12 added 2026-10-15 for Q13); NW-01 Done (VERIFY passed 2026-10-15), NW-02 Done |
 
 ## Specifications at a glance
 
@@ -40,7 +40,7 @@ Tasks are implemented TDD-style: Codex writes the failing tests (RED), Claude ma
 
 Full text in [specifications.md → Open Questions](02-specs/specifications.md#open-questions).
 
-| Question | Owner | Answer (all 2026-10-14) |
+| Question | Owner | Answer (2026-10-14 unless stated) |
 |---|---|---|
 | Q1 | Jean Riffel | Required |
 | Q2 | Jean Riffel | 1–40 graphemes, trim + collapse whitespace, any Unicode except control characters |
@@ -53,4 +53,6 @@ Full text in [specifications.md → Open Questions](02-specs/specifications.md#o
 | Q9 | Jean Riffel | Only creation confirmation and wallet list |
 | Q10 | Jean Riffel | Reject with 422 (do T3) |
 | Q12 | Jean Riffel | `WalletName` value object |
+| Q13 | Jean Riffel | NFC normalization (2026-10-15; NW-12) |
+| Q14 | Jean Riffel | The database index decides case-insensitive uniqueness (2026-10-15) |
 | Q11 | *unassigned* | *open* (only blocks F4, deferred) |

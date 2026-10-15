@@ -133,12 +133,17 @@ The hand-off is the task file's `## TDD log` plus the uncommitted working tree o
 **Nothing is committed until VERIFY passes.** The backend's pre-commit hook runs `npm test`, so an
 earlier commit would be blocked; never bypass it with `--no-verify`.
 
+**Every phase ends with a log entry, and a phase isn't finished until its entry is written.** The
+next agent starts from that entry, not from the previous agent's conversation, so the entry must say
+what was done and what the next agent has to do.
+
 Each entry should be readable by a human reviewer and by the next agent without other context. Use
 this shape, and leave out fields the task header already gives (feature, spec):
 
 ```markdown
 ### <PHASE> [<round>] (<agent>)
 
+- Summary: <2–4 sentences, plain language: what this phase did and the state it leaves the task in>.
 - Date: <YYYY-MM-DD>.
 - Branch (<repo>): `<branch>`; changes uncommitted.
 - Test integrity: SHA-256 of each test file before and after (RED: the new hashes).
@@ -146,6 +151,8 @@ this shape, and leave out fields the task header already gives (feature, spec):
 - Commands and results: <command>: exit <code>, <counts or the relevant output>.
 - Findings, blockers or limitations: <or "none">.
 - Next: <PHASE>, by <agent>.
+- For the next agent: <what to do first, what to watch for (fragile tests, environment quirks,
+  decisions taken and why), and anything deliberately left undone>.
 ```
 
 Entries written before this template (e.g. NW-02) keep their format.

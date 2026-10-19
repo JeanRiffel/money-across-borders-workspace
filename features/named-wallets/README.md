@@ -4,7 +4,7 @@ Customers can assign a name to their wallets, so they can identify and distingui
 
 | | |
 |---|---|
-| **Status** | Implementation in progress; NW-01 and NW-02 Done. |
+| **Status** | Implementation in progress; NW-01, NW-02 and NW-12 Done. |
 | **Repositories** | `money-across-borders` (backend), `money-across-borders-web` (frontend) |
 | **Last updated** | 2026-10-15 |
 

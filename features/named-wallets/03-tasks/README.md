@@ -22,7 +22,7 @@
 | [NW-09](NW-09-frontend-test-harness.md) | Frontend test harness | T5 | Frontend | – | **No** (tooling) | Not started |
 | [NW-10](NW-10-open-wallet-form-name.md) | Name field in the Open Wallet form, own account only | F2, T1 | Frontend | NW-03, NW-05, NW-09 | Yes | Not started |
 | [NW-11](NW-11-wallet-list-page.md) | Wallet list page | F3 | Frontend | NW-06, NW-09 | Yes | Not started |
-| [NW-12](NW-12-wallet-name-nfc.md) | `WalletName` normalizes to NFC (added 2026-10-15, Q13) | F1 | Backend | NW-02 | Yes | Not started |
+| [NW-12](NW-12-wallet-name-nfc.md) | `WalletName` normalizes to NFC (added 2026-10-15, Q13) | F1 | Backend | NW-02 | Yes | Done |
 
 Status values: *Not started* → *RED* → *GREEN* → *REFACTOR* → *VERIFY* → *Done* (or back to an earlier
 phase; see [TDD workflow → Failures](../../../docs/workflows/tdd.md#6-failures-and-retries)).
